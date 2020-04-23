@@ -129,13 +129,13 @@ def aesDecrypt(cipher_text,key):
     return unicode2Text(A0)
 
 
-if __name__== '__main__':
+#if __name__== '__main__':
     # driver code :
-    plain_text = input("Enter a 16 character long string to be encoded : ")
-    cipher_key = input("Enter a 16 character long key for encryption : ")    
-    print("Encrypting : ")    
-    cipher_text = aesEncrypt(plain_text,cipher_key)
-    print("The encrpyted text is : {}".format(cipher_text))
-    print("Decrypting : ")
-    decrypted_text = aesDecrypt(cipher_text,cipher_key)
-    print("The decrpyted text is : {}".format(decrypted_text))
+   # plain_text = input("Enter a 16 character long string to be encoded : ")
+   # cipher_key = input("Enter a 16 character long key for encryption : ")    
+   # print("Encrypting : ")    
+   # cipher_text = aesEncrypt(plain_text,cipher_key)
+    #print("The encrpyted text is : {}".format(cipher_text))
+    #print("Decrypting : ")
+    #decrypted_text = aesDecrypt(cipher_text,cipher_key)
+    #print("The decrpyted text is : {}".format(decrypted_text))
