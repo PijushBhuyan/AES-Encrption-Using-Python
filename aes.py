@@ -1,0 +1,108 @@
+import numpy as np
+
+
+# method to convert text to unicode matrix
+def text2Unicode(text):
+  text_matrix = np.zeros((16),dtype=int)  # 16 element vector with zeros
+
+  for i in range(16):
+    text_matrix[i] = ord(text[i])     # ord converts char to unicode integer value
+
+  text_matrix = np.reshape(text_matrix,(4,4)) # reshape the vector to a 4x4 matrix
+  return text_matrix
+
+
+# funtion to convert unicode matrix to text
+def unicode2Text(matrix):
+  text = ""
+  matrix = matrix.flatten()
+  for i in range(16):
+    text+=chr(int(matrix[i])) # chr converts unicode integer to unicode character
+  return text
+
+
+# method to substitute bytes using rjindael s-box
+def subBytes(A):
+  s_box = np.load('s_box.npy')
+  B = np.zeros((4,4),dtype=int)
+  for row in range(4):
+    for col in range(4):
+      sub_row, sub_col = A[row,col]//16, A[row,col]%16
+      B[row,col] = s_box[sub_row,sub_col]
+  return B
+
+
+# method to restore bytes of using inverse rjindael s-box
+def invSubBytes(A):
+  inv_s_box = np.load('inv_s_box.npy')
+  B = np.zeros((4,4),dtype=int)
+  for row in range(4):
+    for col in range(4):
+      sub_row, sub_col = A[row,col]//16, A[row,col]%16
+      B[row,col] = inv_s_box[sub_row,sub_col]
+  return B
+
+
+# method to shift rows
+def shiftRows(A):
+  B = np.zeros((4,4),dtype=int)
+  # keep 1st row intact
+  B[0,:] = A[0,:]
+  # shift each element of 2nd row 1 step to the left 
+  B[1,0],B[1,1],B[1,2],B[1,3] = A[1,1],A[1,2],A[1,3],A[1,0] 
+  # shift each element of 3rd row 2 steps to the left
+  B[2,0],B[2,1],B[2,2],B[2,3] = A[2,2],A[2,3],A[2,0],A[2,1]
+  # shift each element of 4th row 3 steps to the left
+  B[3,0],B[3,1],B[3,2],B[3,3] = A[3,3],A[3,0],A[3,1],A[3,2]
+  return B
+
+
+# method to restore shifted rows
+def invShiftRows(A):
+  B = np.zeros((4,4),dtype=int)
+  # keep 1st row intact
+  B[0,:] = A[0,:]
+  # shift each element of 2nd row 1 step to the left 
+  B[1,1],B[1,2],B[1,3],B[1,0] = A[1,0],A[1,1],A[1,2],A[1,3] 
+  # shift each element of 3rd row 2 steps to the left
+  B[2,2],B[2,3],B[2,0],B[2,1] = A[2,0],A[2,1],A[2,2],A[2,3]
+  # shift each element of 4th row 3 steps to the left
+  B[3,3],B[3,0],B[3,1],B[3,2] = A[3,0],A[3,1],A[3,2],A[3,3]
+  return B
+
+
+#method to mix columns using Galois Field E Table
+def mixCol(A):
+  e_table = np.load('E_Table.npy')
+  B = np.zeros((4,4),dtype=int)
+  for row in range(4):
+    for col in range(4):
+      sub_row , sub_col = A[row,col]//16,A[row,col]%16
+      B[row,col] = e_table[sub_row,sub_col]
+  return B
+
+
+#method to restore mixed columns using Galois Field L Table
+def invMixCol(A):
+  l_table = np.load('L_Table.npy')
+  B = np.zeros((4,4),dtype=int)
+  for row in range(4):
+    for col in range(4):
+      sub_row , sub_col = A[row,col]//16,A[row,col]%16
+      B[row,col] = l_table[sub_row,sub_col]
+  return B
+
+
+# Main AES Encrtption Method
+def aesEncrypt(plain_text):
+    A = text2Unicode(plain_text)
+    A = subBytes(A)
+    A = shiftRows(A)
+    A = mixCol(A)
+    return unicode2Text(A)
+
+# driver code :
+plain_text = input("Enter a 16 character long string to be encoded : ")
+cipher_text = aesEncrypt(plain_text)
+print(cipher_text)
+
