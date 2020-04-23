@@ -93,16 +93,49 @@ def invMixCol(A):
   return B
 
 
+#method to add round key to text
+def addRoundKey(A,key):
+    B = np.zeros((4,4),dtype=int)
+    B = np.bitwise_xor(A,key)
+    return B
+
+
+#method to restore text after adding round key
+def removeRoundKey(A,key):
+    B = np.zeros((4,4),dtype=int)
+    B = np.bitwise_xor(A,key)
+    return B
+
+
 # Main AES Encrtption Method
-def aesEncrypt(plain_text):
-    A = text2Unicode(plain_text)
-    A = subBytes(A)
-    A = shiftRows(A)
-    A = mixCol(A)
-    return unicode2Text(A)
+def aesEncrypt(plain_text,key):
+    key = text2Unicode(key)
+    A0 = text2Unicode(plain_text)
+    A1 = subBytes(A0)
+    A2 = shiftRows(A1)
+    A3 = mixCol(A2)
+    A4 = addRoundKey(A3,key)
+    return unicode2Text(A4)
 
-# driver code :
-plain_text = input("Enter a 16 character long string to be encoded : ")
-cipher_text = aesEncrypt(plain_text)
-print(cipher_text)
 
+# Main AES Decryption Method
+def aesDecrypt(cipher_text,key):
+    key = text2Unicode(key)
+    cipher_text = text2Unicode(cipher_text)
+    A3 = removeRoundKey(cipher_text,key)
+    A2 = invMixCol(A3)
+    A1 = invShiftRows(A2)
+    A0 = invSubBytes(A1)
+    return unicode2Text(A0)
+
+
+if __name__== '__main__':
+    # driver code :
+    plain_text = input("Enter a 16 character long string to be encoded : ")
+    cipher_key = input("Enter a 16 character long key for encryption : ")    
+    print("Encrypting : ")    
+    cipher_text = aesEncrypt(plain_text,cipher_key)
+    print("The encrpyted text is : {}".format(cipher_text))
+    print("Decrypting : ")
+    decrypted_text = aesDecrypt(cipher_text,cipher_key)
+    print("The decrpyted text is : {}".format(decrypted_text))
