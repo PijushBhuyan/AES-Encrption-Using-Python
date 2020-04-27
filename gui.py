@@ -29,7 +29,7 @@ def popup():
         output=aesEncrypt(text,key)
         send_output(key,output)
         messagebox.showinfo("ENCRYPTED OUTPUT",output)
-        messagebox.showinfo("OUTPUT SAVED IN:",name)
+        messagebox.showinfo("OUTPUT SAVED IN:",'TXTfiles/'+name)
         file.write(output)
         file.close()
 
