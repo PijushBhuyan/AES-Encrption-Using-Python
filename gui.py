@@ -3,7 +3,7 @@ from aes import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
 from tkinter.filedialog import askopenfile 
-
+import os.path
 
 def hide_frame():
     first_frame.grid_forget()
@@ -19,12 +19,13 @@ def popup():
     text=e1.get()
     key=e2.get()
     name = e3.get()
-    file = open(name,'w+')
+    
     e1.delete(0,END)
     e2.delete(0,END)
     if(text==""):
         messagebox.showerror("ERROR","Enter 16 bit text only")
     else:
+        file = open('TXTfiles/'+name,"w+")
         output=aesEncrypt(text,key)
         send_output(key,output)
         messagebox.showinfo("ENCRYPTED OUTPUT",output)
@@ -36,7 +37,7 @@ def popup():
 
 def popdown():
     name = e4.get()
-    file = open(name,"r")
+    file = open('TXTfiles/'+name,"r")
     text= file.read()
     key=global_key.get() 
     e4.delete(0,END)
