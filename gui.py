@@ -23,13 +23,13 @@ def popup():
     e1.delete(0,END)
     e2.delete(0,END)
     if(text==""):
-        messagebox.showerror("ERROR","Enter 16 bit text only")
+        messagebox.showerror("ERROR","Text Cannot Be Empty!")
     else:
-        file = open('TXTfiles/'+name,"w+")
+        file = open('Encrypted/'+name,"w+")
         output=aesEncrypt(text,key)
         send_output(key,output)
         messagebox.showinfo("ENCRYPTED OUTPUT",output)
-        messagebox.showinfo("OUTPUT SAVED IN:",'TXTfiles/'+name)
+        messagebox.showinfo("ENCRYPTED FILE SAVED IN:",'Encrypted/'+name)
         file.write(output)
         file.close()
 
@@ -37,16 +37,20 @@ def popup():
 
 def popdown():
     name = e4.get()
-    file = open('TXTfiles/'+name,"r")
+    file = open('Encrypted/'+name,"r")
     text= file.read()
     key=global_key.get() 
     e4.delete(0,END)
     #e5.delete(0,END)
     if(text==""):
-        messagebox.showerror("ERROR","Enter 16 bit text only")
+        messagebox.showerror("ERROR","FIle Name Cannot Be Empty!")
     else:
+        file = open("Decrypted/decrypted_"+name,"w+")        
         output=aesDecrypt(text,key)
+        file.write(output)
+        file.close()
         messagebox.showinfo("DECRYPTED OUTPUT",output)
+        messagebox.showinfo("DECRYPTED FILE SAVED IN:",'Decrypted/'+name)
 
 
 

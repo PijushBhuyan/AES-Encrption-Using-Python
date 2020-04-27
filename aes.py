@@ -23,7 +23,7 @@ def unicode2Text(matrix):
 
 # method to substitute bytes using rjindael s-box
 def subBytes(A):
-  s_box = np.load('s_box.npy')
+  s_box = np.load('Lookup Tables/s_box.npy')
   B = np.zeros((4,4),dtype=int)
   for row in range(4):
     for col in range(4):
@@ -34,7 +34,7 @@ def subBytes(A):
 
 # method to restore bytes of using inverse rjindael s-box
 def invSubBytes(A):
-  inv_s_box = np.load('inv_s_box.npy')
+  inv_s_box = np.load('Lookup Tables/inv_s_box.npy')
   B = np.zeros((4,4),dtype=int)
   for row in range(4):
     for col in range(4):
@@ -73,7 +73,7 @@ def invShiftRows(A):
 
 #method to mix columns using Galois Field E Table
 def mixCol(A):
-  e_table = np.load('E_Table.npy')
+  e_table = np.load('Lookup Tables/E_Table.npy')
   B = np.zeros((4,4),dtype=int)
   for row in range(4):
     for col in range(4):
@@ -84,7 +84,7 @@ def mixCol(A):
 
 #method to restore mixed columns using Galois Field L Table
 def invMixCol(A):
-  l_table = np.load('L_Table.npy')
+  l_table = np.load('Lookup Tables/L_Table.npy')
   B = np.zeros((4,4),dtype=int)
   for row in range(4):
     for col in range(4):
@@ -110,32 +110,57 @@ def removeRoundKey(A,key):
 # Main AES Encrtption Method
 def aesEncrypt(plain_text,key):
     key = text2Unicode(key)
-    A0 = text2Unicode(plain_text)
-    A1 = subBytes(A0)
-    A2 = shiftRows(A1)
-    A3 = mixCol(A2)
-    A4 = addRoundKey(A3,key)
-    return unicode2Text(A4)
+    length = len(plain_text)
+    cipher_text = "" 
+    
+    # splitting  plain_text into substrings of length 16 each and adding whitspaces to shorter substrings    
+    plain_text_split = []
+    for i in range(length//16):
+        plain_text_split.append(plain_text[0+16*i:16+16*i])
+    if not length%16==0:        
+        plain_text_split.append(plain_text[16*(length//16):])
+    if len(plain_text_split[-1])<16:
+        while(len(plain_text_split[-1])<16):
+            plain_text_split[-1]+=' '
+    
+    # encrypting each sub string
+    for sub_string in plain_text_split : 
+        A0 = text2Unicode(sub_string)
+        A1 = subBytes(A0)
+        A2 = shiftRows(A1)
+        A3 = mixCol(A2)
+        A4 = addRoundKey(A3,key)
+        cipher_text+=unicode2Text(A4)
+    return cipher_text
 
 
 # Main AES Decryption Method
 def aesDecrypt(cipher_text,key):
     key = text2Unicode(key)
-    cipher_text = text2Unicode(cipher_text)
-    A3 = removeRoundKey(cipher_text,key)
-    A2 = invMixCol(A3)
-    A1 = invShiftRows(A2)
-    A0 = invSubBytes(A1)
-    return unicode2Text(A0)
+    decrypted_text = ""
+    length = len(cipher_text)
+    # splitting  cipher text into substrings of length 16 each    
+    cipher_text_split = []
+    for i in range(length//16):
+        cipher_text_split.append(cipher_text[0+16*i:16+16*i])
+    
+    # decrypting each substring
+    for sub_string in cipher_text_split:
+        cipher_text = text2Unicode(sub_string)
+        A3 = removeRoundKey(cipher_text,key)
+        A2 = invMixCol(A3)
+        A1 = invShiftRows(A2)
+        A0 = invSubBytes(A1)
+        decrypted_text+=unicode2Text(A0)
+    return decrypted_text
 
-
-#if __name__== '__main__':
+if __name__== '__main__':
     # driver code :
-   # plain_text = input("Enter a 16 character long string to be encoded : ")
-   # cipher_key = input("Enter a 16 character long key for encryption : ")    
-   # print("Encrypting : ")    
-   # cipher_text = aesEncrypt(plain_text,cipher_key)
-    #print("The encrpyted text is : {}".format(cipher_text))
-    #print("Decrypting : ")
-    #decrypted_text = aesDecrypt(cipher_text,cipher_key)
-    #print("The decrpyted text is : {}".format(decrypted_text))
+    plain_text = input("Enter a string to be encoded : ")
+    cipher_key = input("Enter a 16 character long key for encryption : ")    
+    print("Encrypting : ")    
+    cipher_text = aesEncrypt(plain_text,cipher_key)
+    print("The encrpyted text is : {}".format(cipher_text))
+    print("Decrypting : ")
+    decrypted_text = aesDecrypt(cipher_text,cipher_key)
+    print("The decrpyted text is : {}".format(decrypted_text))
