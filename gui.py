@@ -23,13 +23,13 @@ def popup():
     e1.delete(0,END)
     e2.delete(0,END)
     if(text==""):
-        messagebox.showerror("ERROR","Text Cannot Be Empty!")
+        messagebox.showerror("ERROR","Enter 16 bit text only")
     else:
-        file = open('Encrypted/'+name,"w+")
+        file = open('Encrypted/'+name+'.txt',"w+")
         output=aesEncrypt(text,key)
         send_output(key,output)
         messagebox.showinfo("ENCRYPTED OUTPUT",output)
-        messagebox.showinfo("ENCRYPTED FILE SAVED IN:",'Encrypted/'+name)
+        messagebox.showinfo("OUTPUT SAVED IN:",'AES-Encryption-Using-Python/Encrypted/'+name+'.txt')
         file.write(output)
         file.close()
 
@@ -37,20 +37,22 @@ def popup():
 
 def popdown():
     name = e4.get()
-    file = open('Encrypted/'+name,"r")
-    text= file.read()
+    file1 = open('Encrypted/'+name+'.txt',"r")
+    file2 = open('Decrypted/'+name+'decrypted.txt','w+')
+    text= file1.read()
     key=global_key.get() 
     e4.delete(0,END)
     #e5.delete(0,END)
+    file1.close()
     if(text==""):
-        messagebox.showerror("ERROR","FIle Name Cannot Be Empty!")
+        messagebox.showerror("ERROR","Enter 16 bit text only")
     else:
-        file = open("Decrypted/decrypted_"+name,"w+")        
         output=aesDecrypt(text,key)
-        file.write(output)
-        file.close()
         messagebox.showinfo("DECRYPTED OUTPUT",output)
-        messagebox.showinfo("DECRYPTED FILE SAVED IN:",'Decrypted/'+name)
+        file2.write(output)
+        messagebox.showinfo('Decrypted Output saved in file : ','AES-Encryption-Using-Python/Decrypted/'+name+'decrypted.txt')
+        file2.close()
+
 
 
 
@@ -67,19 +69,19 @@ def file_one():
     myLabel3.grid(row=2,column=0,pady=20,ipadx=10)
     e1.grid(row=2,column=1,pady=20)
     e1.insert(0,"Enter text here")
-    myLabel4=Label(first_frame,text="KEY",font="bold")
+    myLabel4=Label(first_frame,text="KEY(16 char)",font="bold+italic")
     myLabel4.grid(row=3,column=0,pady=20,ipadx=10)
     e2.grid(row=3,column=1,pady=20)
-    e2.insert(0,"Enter 16 bit password here here")
+    e2.insert(0,"")
     myLabel5=Label(first_frame,text="FILENAME",font="bold")
     myLabel5.grid(row=4,column=0,pady=20,ipadx=10)
     e3.grid(row=4,column=1,pady=20)
-    e3.insert(0,"Please add a .txt after name")
+    e3.insert(0,"Name of the file to be saved")
     
-    myButton=Button(first_frame,text="Encrypt",fg="black",bg="yellow",command=popup,activeforeground="black",activebackground="orange",relief="raised",bd=5)
+    myButton=Button(first_frame,text="Encrypt",fg="black",bg="orange",command=popup,activeforeground="black",activebackground="purple",relief="raised",bd=5)
     myButton.grid(row=7,column=1)
-    button_quit=Button(first_frame,text="EXIT",command=root.quit,fg="black",bg="yellow",activeforeground="black",activebackground="orange",relief="raised",bd=5)
-    button_quit.grid(row=8,column=1,pady=10)
+    button_quit=Button(first_frame,text="EXIT",command=root.quit,fg="black",bg="orange",activeforeground="black",activebackground="purple",relief="raised",bd=5)
+    button_quit.grid(row=8,column=1,pady=20)
 
 
 def file_two():
@@ -95,13 +97,13 @@ def file_two():
     #myLabel3=Label(sec_frame,text="TEXT",font="bold")
     #myLabel3.grid(row=4,column=0,pady=20,ipadx=10)
     #e5.grid(row=4,column=1,pady=20)
-    myLabel4=Label(sec_frame,text="KEY",font="bold")
+    myLabel4=Label(sec_frame,text="KEY(16 BIT)",font="bold")
     myLabel4.grid(row=5,column=0,pady=20,ipadx=10)
     e6.grid(row=5,column=1,pady=20)
-    myButton=Button(sec_frame,text="Decrypt",fg="black",bg="yellow",command=popdown,activeforeground="black",activebackground="orange",relief="raised",bd=5)
+    myButton=Button(sec_frame,text="Decrypt",fg="black",bg="orange",command=popdown,activeforeground="black",activebackground="purple",relief="raised",bd=5)
     myButton.grid(row=6,column=1)
-    button_quit=Button(sec_frame,text="EXIT",command=root.quit,fg="black",bg="yellow",activeforeground="black",activebackground="orange",relief="raised",bd=5)
-    button_quit.grid(row=7,column=1,pady=10)
+    button_quit=Button(sec_frame,text="EXIT",command=root.quit,fg="black",bg="orange",activeforeground="black",activebackground="purple",relief="raised",bd=5)
+    button_quit.grid(row=8,column=1,pady=20)
 
 def file_three():
     hide_frame()
@@ -130,24 +132,22 @@ def file_three():
 root = Tk()
 root.geometry("600x400")
 root.title("ENCRYPTION PROGRAM") 
-root.call('wm', 'iconphoto',Tk._w,ImageTk.PhotoImage(Image.open('POWER.ico')))
+root.call('wm', 'iconphoto',Tk._w,ImageTk.PhotoImage(Image.open('encrypo.ico')))
 menubar = Menu(root)
-menubar.add_command(label="ENCRYPT",activebackground="orange",activeforeground="black",command=file_one)
-menubar.add_command(label="DECRYPT",activebackground="orange",activeforeground="black",command=file_two)
-menubar.add_command(label="ABOUT",activebackground="orange",activeforeground="black",command=file_three)
+menubar.add_command(label="ENCRYPT",activebackground="purple",activeforeground="white",command=file_one)
+menubar.add_command(label="DECRYPT",activebackground="purple",activeforeground="white",command=file_two)
+menubar.add_command(label="ABOUT",activebackground="purple",activeforeground="white",command=file_three)
 root.config(menu=menubar)
 first_frame = Frame(root,width=600,height=400)
 sec_frame = Frame(root,width=600,height=400)
 third_frame = Frame(root,width=600,height=400)
 e1 = Entry(first_frame,width=50,borderwidth=6)
-e2 = Entry(first_frame,width=50,borderwidth=6)
+e2 = Entry(first_frame,show='*',width=50,borderwidth=6)
 e3 = Entry(first_frame,width=50,borderwidth=6)
 global_text=StringVar()
 global_key=StringVar()
 e4 = Entry(sec_frame,width=50,borderwidth=6)
 #e5 = Entry(sec_frame,width=50,borderwidth=6,textvariable=global_text)
-e6 = Entry(sec_frame,width=50,borderwidth=6,textvariable=global_key)
+e6 = Entry(sec_frame,show='*',width=50,borderwidth=6,textvariable=global_key)
 file_one()
-
-
-root.mainloop() 
+root.mainloop()
