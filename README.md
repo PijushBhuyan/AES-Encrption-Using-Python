@@ -24,7 +24,9 @@ A typical AES encryption algorithm runs for 10 rounds -each round comprising of 
 
 The 1st round is shown below - 
 ![First Round Process](https://www.tutorialspoint.com/cryptography/images/first_round_process.jpg)
-Note - _We have restricted our algorithm to a single round for the sake of simplicity._
+
+
+<p>Note - _We have restricted our algorithm to a single round for the sake of simplicity._
 
 ### Byte Substitution (SubBytes)
 
