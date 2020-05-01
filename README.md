@@ -93,13 +93,13 @@ The process of decryption of an AES ciphertext is similar to the encryption proc
 
 ## Screenshots - 
 ### Encryption -
-img< src = "Screenshots/encryption 1.png">
-img< src = "Screenshots/encryption 2.png">
-img< src = "Screenshots/encryption 3.png">
+<img src = "Screenshots/encryption 1.png">
+<img src = "Screenshots/encryption 2.png">
+<img src = "Screenshots/encryption 3.png">
 
 ### Decryption - 
-img< src = "Screenshots/decryption 1.png">
-img< src = "Screenshots/decryption 2.png">
-img< src = "Screenshots/decryption 3.png">
+<img src = "Screenshots/decryption 1.png">
+<img src = "Screenshots/decryption 2.png">
+<img src = "Screenshots/decryption 3.png">
 
 
