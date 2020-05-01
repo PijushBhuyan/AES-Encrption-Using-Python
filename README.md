@@ -20,9 +20,9 @@ A simple GUI implementation of 128 bit AES Rjindael encryption (single round til
 
 ## Encryption Algorithm - 
 
-A typical AES encryption algorithm runs for 10 rounds -each round comprising of 4 processes. 
+A typical AES encryption algorithm runs for 10 rounds -each round comprising of 4 processes.The 1st round is shown below - 
 
-The 1st round is shown below - 
+
 ![First Round Process](https://www.tutorialspoint.com/cryptography/images/first_round_process.jpg)
 
 
