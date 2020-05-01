@@ -26,12 +26,16 @@ The 1st round is shown below -
 ![First Round Process](https://www.tutorialspoint.com/cryptography/images/first_round_process.jpg)
 
 
-<p>Note - _We have restricted our algorithm to a single round for the sake of simplicity._
-
+<p>Note - We have restricted our algorithm to a single round for the sake of simplicity.
+	
 ### Byte Substitution (SubBytes)
 
-The 16 input bytes are substituted by looking up a fixed table (S-box) given in design. The result is in a matrix of four rows and four columns.
+The 16 input bytes are substituted by looking up a fixed table (S-box) given in design. 
+
+
 ![sub bytes](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/AES-SubBytes.svg/320px-AES-SubBytes.svg.png)
+
+
 ### Shiftrows
 
 Each of the four rows of the matrix is shifted to the left. Any entries that ‘fall off’ are re-inserted on the right side of row. Shift is carried out as follows −
