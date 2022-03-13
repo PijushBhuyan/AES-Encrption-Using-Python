@@ -45,15 +45,11 @@ def invSubBytes(A):
 
 # method to shift rows
 def shiftRows(A):
-  B = np.zeros((4,4),dtype=int)
-  # keep 1st row intact
-  B[0,:] = A[0,:]
-  # shift each element of 2nd row 1 step to the left 
-  B[1,0],B[1,1],B[1,2],B[1,3] = A[1,1],A[1,2],A[1,3],A[1,0] 
-  # shift each element of 3rd row 2 steps to the left
-  B[2,0],B[2,1],B[2,2],B[2,3] = A[2,2],A[2,3],A[2,0],A[2,1]
-  # shift each element of 4th row 3 steps to the left
-  B[3,0],B[3,1],B[3,2],B[3,3] = A[3,3],A[3,0],A[3,1],A[3,2]
+  r0 = A[0,:] # NO shift
+  r1 = np.roll(A[1,:], -1) # Shift 1
+  r2 = np.roll(A[2,:], -2) # Shift 2
+  r3 = np.roll(A[3,:], -3) # Shift 3
+  B = np.concatenate([r0,r1,r2,r3]).reshape(4,4)
   return B
 
 
